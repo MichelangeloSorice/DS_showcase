@@ -107,17 +107,16 @@ public class DLList<T> {
 
 
     public boolean remove(Object elem){
-        DNode<T> trav = head;
 
         if(elem == null){
-            for(trav = head; trav != null; trav = trav.next){
+            for(DNode<T> trav = head; trav != null; trav = trav.next){
                 if(trav.value() == null){
                     remove(trav);
                     return true;
                 }
             }
         }else{
-            for(trav = head; trav != null; trav = trav.next){
+            for(DNode<T> trav = head; trav != null; trav = trav.next){
                 if(elem.equals(trav.value())){
                     remove(trav);
                     return true;
@@ -127,6 +126,27 @@ public class DLList<T> {
 
         return false;
 
+    }
+
+    public int indexOf(Object elem){
+        int i = 0;
+
+        if(elem == null){
+            for(DNode<T> trav = head; trav != null; trav = trav.next, i++){
+                if(trav.value() == null) return i;
+            }
+        }else{
+            for(DNode<T> trav = head; trav != null; trav = trav.next, i++){
+                if(elem.equals(trav.value())) return i;
+            }
+        }
+
+        return -1;
+
+    }
+
+    public boolean contains(Object elem){
+        return indexOf(elem) != -1 ? true : false;
     }
 
     private T remove(DNode<T> node){
