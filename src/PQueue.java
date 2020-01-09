@@ -8,6 +8,7 @@ public class PQueue<T extends Comparable<T>> {
 
     // Dynamic list to track elements within the heap
     private List<T> heap = null;
+
     // Map keeping track for each element value the set of indices
     // where it can be found within the heap
     // Enables O(logN) removals and O(1) contains checks
@@ -63,8 +64,13 @@ public class PQueue<T extends Comparable<T>> {
 
     public boolean remove(T elem){
         if(elem == null) throw new IllegalArgumentException();
-        // TODO complete and comment
-        //if(!contains(elem)) return;
+
+        if(!contains(elem)) return false;
+
+        Integer elIdx = sup.get(elem).first();
+        if(elIdx != null) removeAt(elIdx);
+        return elIdx != null;
+
     }
 
 
@@ -78,6 +84,7 @@ public class PQueue<T extends Comparable<T>> {
         T removedElem = heap.get(lastElementIdx);
         heap.set(lastElementIdx, null);
         sup.get(removedElem).remove(lastElementIdx);
+        heapSize--;
 
         boubleDownFor(idx);
 
