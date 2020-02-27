@@ -21,6 +21,20 @@ public class PQueue<T extends Comparable<T>> {
         heap = new ArrayList<T>(heapSize);
     }
 
+    // Construct a priority queue using heapify in O(n) time, a great explanation can be found at:
+    // http://www.cs.umd.edu/~meesh/351/mount/lectures/lect14-heapsort-analysis-part.pdf
+    public PQueue(T[] elems) {
+
+        heapSize = heapCapacity = elems.length;
+        heap = new ArrayList<T>(heapCapacity);
+
+        // Place all element in heap
+        for (int i = 0; i < heapSize; i++) heap.add(elems[i]);
+
+        // Heapify process, O(n)
+        for (int i = Math.max(0, (heapSize / 2) - 1); i >= 0; i--) boubleDownFor(i);
+    }
+
     public boolean isEmpty(){
         return heapSize == 0;
     }
