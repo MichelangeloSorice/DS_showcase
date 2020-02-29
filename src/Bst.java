@@ -3,7 +3,11 @@ import java.util.Queue;
 import java.util.Stack;
 
 /**
- * Basic implementation of a Binary Search Tree
+ * Basic implementation of a Binary Search Tree:
+ * BST is a binary tree that satisfies the BST invariant,
+ * left subtree of a node includes nodes with smaller values and
+ * right subtree includes nodes with higher value;
+ * NB we can allow duplicates or not
  * @param <T>
  */
 public class Bst<T extends Comparable<T>> {
