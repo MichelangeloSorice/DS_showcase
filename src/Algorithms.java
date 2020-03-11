@@ -4,6 +4,82 @@ import java.util.List;
 
 public class Algorithms<T extends Comparable> {
 
+
+    /**
+     * Dijkstra's
+     * NB - Main advantage wrt to BFS and DFS is beaing able to deal with weighted graphs
+     *
+     * Time Complexity O(V*log(V) + E) NB the upper limit for E is V^2 (think to a completely connected graph)
+     * Actually if we implement it using a simple binary heap we will end up with O((V+E)log(V))
+     * To get to the best time complexity we need a Fibonacci Heap which provides amortized O(1) time for updating keys
+     *
+     *
+     * Steps - Dijkstra(G, W, s)  - Graph, Weight, Source vertex
+     * 1. Initialization -->
+     *  - d[i] to INFINITE for each vertex rather than s whose dist will be set 0
+     *  - p[i] to null for each vertex (will keep predecessor of vertex i in sp)
+     *  - S = {} set containing vertex for which SP has been found (already processed)
+     *  - Q = {V[G]} set of vertexes to be processed init with the entire set of vertices
+     *
+     * 2. WHILE( Q is not EMPTY)
+     *      u <-- GET_MIN(Q)    // the first we get is of course s - we will perform this V times
+     *      S.add(u)
+     *      for v in Adj[u]     // vertexes reachable from u
+     *          relax(u, v, w)  // if( d[v] > d[u] + W[u][v] ) update d[v] and p[v] as well
+     *                          // update op - will be performed at most E times
+     */
+
+    /**
+     * Bellman-Ford
+     * NB - Main advantage is that it can deal/detect negative cycles and negative edges
+     *
+     * Time Complexity O(V*E) NB the upper limit for E is V^2 (think to a completely connected graph)
+     *
+     * Steps - Bellman-Ford(E, V, s) - Edges, Vertexes, Source node
+     * 1. Initialization -->
+     *  - Define an array D of size V containing sp distances for each vertex.
+     *  - Set all distance values to +INF except for the source node whose distance is 0
+     *
+     * 2. Iterate for i = 0; i<V-1; i++:
+     *      for e in E:                                         // we can go through edges in any order
+     *          if(D[e.from] + e.cost < D[e.to])                // relax each edge
+     *              D[e.to] = D[e.from] + e.cost < D[e.to]
+     *
+     * 3. Negative cycles detections:
+     *  Repeat the exact operations of step 2 but in case an edge can be relaxed set
+     *  the new distance of the to node to -INF. After v-1 iterations all nodes affected or
+     *  directly in a negative cycle will be marked with -INF
+     */
+
+
+    /**
+     * BFS - Breadth First Search
+     * Graph as: Adjacency List - Adj|V| is an array with as many elements as vertexes in the graph
+     *  each element contains a list of vertexes reachable in one step from that vertex.
+     *
+     * Space Time Complexity - O(V+E) vertices + edges - we search the whole graph
+     *
+     * NB - Main problems is detecting cycles to avoid exploring again and again the same node
+     *  Possible approach is to use an hashmap to track the level of each node, if a node has already been found
+     *  during the exploration of a previous level we avoid exploring it again
+     * */
+
+
+
+    /**
+     * DFS - Depth First Search
+     *  Recursive exploration of the graph, backtracking as necessary
+     *
+     * Space Time Complexity - O(V+E) vertices + edges - we search the whole graph
+     *
+     * Alg - for V in Adj(Start):
+     *          if V is not in parent (set of visited nodes)
+     *              parent[V] = S
+     *              dfs(V, Adj(V))
+     */
+
+
+
     /**
      * KRUSKAL'S MINIMUM SPANNING TREE:
      * Supposing edges is an Mx3 matrix representing a graph:
