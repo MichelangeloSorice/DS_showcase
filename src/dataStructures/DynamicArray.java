@@ -1,3 +1,5 @@
+package dataStructures;
+
 import java.util.Iterator;
 
 public class DynamicArray<T> implements Iterable<T> {

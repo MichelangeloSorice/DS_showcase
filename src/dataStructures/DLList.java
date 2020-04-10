@@ -1,3 +1,5 @@
+package dataStructures;
+
 public class DLList<T> {
     private DNode<T> head;
     private DNode<T> tail;

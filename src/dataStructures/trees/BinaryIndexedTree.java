@@ -1,3 +1,5 @@
+package dataStructures.trees;
+
 /**
  * Simple FenwickTree implementation
  */

@@ -1,3 +1,4 @@
+package dataStructures.trees;
 
 // Array based union find
 public class UnionFind {
@@ -16,7 +17,7 @@ public class UnionFind {
     private int numGroups;
 
     public UnionFind(int size){
-        if(size <= 0) throw new IllegalArgumentException("Attempting to create UnionFind with size <= 0!");
+        if(size <= 0) throw new IllegalArgumentException("Attempting to create dataStructures.trees.UnionFind with size <= 0!");
 
         szs = new int[size];
         id = new int[size];

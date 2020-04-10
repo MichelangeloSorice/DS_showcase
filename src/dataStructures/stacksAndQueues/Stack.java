@@ -1,3 +1,7 @@
+package dataStructures.stacksAndQueues;
+
+import dataStructures.DLList;
+
 public class Stack<T> {
 
     private DLList<T> data = new DLList<>();
