@@ -1,3 +1,5 @@
+package dataStructures.trees;
+
 /**
  * Data structure used to efficiently compute range queries over an array
  * as finding range sum or maximum within range

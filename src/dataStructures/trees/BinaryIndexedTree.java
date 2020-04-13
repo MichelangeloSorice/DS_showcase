@@ -28,7 +28,7 @@ public class BinaryIndexedTree {
 
     private int lsb(int i){
         // Get the LSB with some magic complement of 2
-        return i & -1;
+        return i & -i;
     }
 
     // Prefix sum in range [1, i]
@@ -59,5 +59,11 @@ public class BinaryIndexedTree {
     public void set(int i, long k){
         long value = rangeSum(i, i);
         add(i, k-value);
+    }
+
+    // Updating (adding to) range l to r inclusive with val
+    public void range_add(int l, int r, long val){
+        add(l, val);
+        add(r+1, -val);
     }
 }

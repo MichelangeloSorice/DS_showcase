@@ -2,14 +2,13 @@ package dataStructures.trees;
 
 /**
  * Tree data structure used for fast search of words (intended as sequences of symbols)
- * Implementation using lowercase english letters
+ * Implemented for lowercase english letters
  */
 public class Trie {
-    int alphabetSize;
+    final int alphabetSize = 26;
     Node root;
 
     public Trie(int alphabetSize){
-        this.alphabetSize = alphabetSize;
         root = new Node('/');
     }
 
@@ -59,7 +58,7 @@ public class Trie {
 
         Node(char me){
             this.me = me;
-            children = new Node[];
+            children = new Node[alphabetSize];
         }
     }
 }
