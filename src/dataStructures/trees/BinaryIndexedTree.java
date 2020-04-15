@@ -1,11 +1,16 @@
 package dataStructures.trees;
 
 /**
- * Simple FenwickTree implementation
+ * Simple FenwickTree implementation - SUPPORT for POINT UPDATE, RAGE QUERY
  */
 public class BinaryIndexedTree {
     // Array containing tree ranges
+    // Each element of the array contains the prefix sum of a range of elements
+    // tree[i] = prefixSum (i-lsb(i) , i]
     private long[] tree;
+
+    // NEEDED for RANGE UPDATES and POINT QUERY version
+    // private long[] original_tree;
 
     // Create empty tree
     public BinaryIndexedTree(int sz){
@@ -24,11 +29,15 @@ public class BinaryIndexedTree {
             int j = i + lsb(i);
             if(j < tree.length) tree[j] += tree[i];
         }
+        // original_tree = tree.clone();
     }
 
     private int lsb(int i){
-        // Get the LSB with some magic complement of 2
+        // Isolates the lowest one bit value
         return i & -i;
+
+        // An alternative method is to use the Java's built in method
+        // return Integer.lowestOneBit(i);
     }
 
     // Prefix sum in range [1, i]
@@ -41,7 +50,7 @@ public class BinaryIndexedTree {
         return sum;
     }
 
-    // Sum in range [i, j]
+    // RANGE QUERY - Sum in range [i, j]
     public long rangeSum(int i, int j){
         if(j<i) throw new IllegalArgumentException("invalid range");
         return prefixSum(j) - prefixSum(i-1);
@@ -55,15 +64,38 @@ public class BinaryIndexedTree {
         }
     }
 
-    // Setting index i to be equal to k
+    // POINT UPDATE  - Setting index i to be equal to k
     public void set(int i, long k){
         long value = rangeSum(i, i);
         add(i, k-value);
     }
 
+
+    /***
+     * RANGE UPDATE AND POINT QUERY version
+     * Let the Fenwick tree be initialized with zeros. Suppose that we want to increment the interval [l,r] by x
+     * We make two point update operations on Fenwick tree which are add(l, x) and add(r+1, -x).
+     *
+     * If we want to get the value of A[i],
+     * we just need to take the prefix sum using the ordinary range sum method (as original tree sums are all zeros).
+     * To see why this is true, we can just focus on the previous increment operation again.
+     * If i<l, then the two update operations have no effect on the query and we get the sum 0.
+     * If i∈[l,r], then we get the answer x because of the first update operation.
+     * And if i>r, then the second update operation will cancel the effect of first one.
+     */
+
+
+    //  The logic behind this method is the
+    // same as finding the prefix sum in a Fenwick tree except that you need to
+    // take the difference between the current tree and the original to get
+    // the point value.
+    // public long get(int i) {
+         //return prefixSum(i, tree) - prefixSum(i - 1, original_tree);
+    // }
+
     // Updating (adding to) range l to r inclusive with val
-    public void range_add(int l, int r, long val){
-        add(l, val);
-        add(r+1, -val);
-    }
+    // public void range_add(int l, int r, long val){
+        //add(l, val);
+        //add(r+1, -val);
+    //}
 }
