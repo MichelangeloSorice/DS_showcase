@@ -1,15 +1,13 @@
 import dataStructures.trees.UnionFind;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Algorithms<T extends Comparable> {
 
 
     /**
      * Dijkstra's
-     * NB - Main advantage wrt to BFS and DFS is beaing able to deal with weighted graphs
+     * NB - Main advantage wrt to BFS and DFS is being able to deal with weighted graphs
      *
      * Time Complexity O(V*log(V) + E) NB the upper limit for E is V^2 (think to a completely connected graph)
      * Actually if we implement it using a simple binary heap we will end up with O((V+E)log(V))
@@ -30,6 +28,42 @@ public class Algorithms<T extends Comparable> {
      *          relax(u, v, w)  // if( d[v] > d[u] + W[u][v] ) update d[v] and p[v] as well
      *                          // update op - will be performed at most E times
      */
+    public int[] spDijkstra(int[][] edges, int N, int K) {
+        // N vertexes 0 based
+        List<List<Integer[]>> adj = new ArrayList();
+
+        for(int i = 0; i<N; i++)  adj.add(new ArrayList());
+        // Edges[i] = {source, dest, cost}
+        for(int[] edg : edges)
+            adj.get(edg[0]).add(new Integer[]{edg[1], edg[2]});
+
+        // Initializing distances
+        int[] dist = new int[N];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+
+        // The queue contains vertexes with their sp so far, may contain same vertex with multiple distances at the same time
+        // a[0] vertex dist a[1] vertex id
+        Queue<int[]> pq = new PriorityQueue<>((a, b) -> (a[0]-b[0]));
+        pq.offer(new int[]{0,K});
+
+        int res = 0;
+        while(!pq.isEmpty()){
+            int[] cur = pq.poll();
+
+            if(dist[cur[1]] != Integer.MAX_VALUE) continue; // already found sp for the node
+            // Found sp up to it
+            dist[cur[1]] = cur[0];
+
+            // Relaxing
+            List<Integer[]> c_adj = adj.get(cur[1]);
+            for(Integer[] edg : c_adj){
+                pq.offer(new int[]{cur[0] + edg[1], edg[0]});
+            }
+        }
+
+        return dist;
+    }
+
 
     /**
      * Bellman-Ford
