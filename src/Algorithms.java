@@ -267,4 +267,33 @@ public class Algorithms<T extends Comparable> {
      * - To minimize it we must choose b = N in that case if k <= N^c - we get O(NC) linear time
      */
 
+
+    /**
+     * Moore's Voting Algorithm - Find Majority Element (for array of length N appears at least N/2 times)
+     * The algorithm always identifies a candidate majority element even if no majority element is present
+     * thus requires a verification step
+     */
+
+    public int majorityElement(int[] nums) {
+        int candidate = nums[0], count = 1;
+
+        for(int i = 1; i<nums.length; i++){
+            if(candidate == nums[i]) {
+                count++;
+            }else if(count == 0){
+                candidate = nums[i]; // Set up new candidate
+                count = 1;
+            }else{
+                count--;
+            }
+        }
+
+        // check if candidate is actually a majority element
+        count = 0;
+        for(int x : nums) if(x==candidate) count++;
+
+        return count >= nums.length/2 ? candidate : null;
+    }
+
+
 }
