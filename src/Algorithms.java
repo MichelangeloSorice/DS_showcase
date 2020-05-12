@@ -50,14 +50,16 @@ public class Algorithms<T extends Comparable> {
         while(!pq.isEmpty()){
             int[] cur = pq.poll();
 
-            if(dist[cur[1]] != Integer.MAX_VALUE) continue; // already found sp for the node
+            // already found sp for the node
+            if(dist[cur[1]] <= cur[0]) continue;
             // Found sp up to it
             dist[cur[1]] = cur[0];
 
             // Relaxing
             List<Integer[]> c_adj = adj.get(cur[1]);
             for(Integer[] edg : c_adj){
-                pq.offer(new int[]{cur[0] + edg[1], edg[0]});
+                if(cur[0]+edg[1] < dist[edg[0]])
+                    pq.offer(new int[]{cur[0] + edg[1], edg[0]});
             }
         }
 
@@ -87,9 +89,38 @@ public class Algorithms<T extends Comparable> {
      *  directly in a negative cycle will be marked with -INF
      */
 
+    /**
+     * Floyd Warshall Algorithm - Perfect for AllPairsDP in small graphs (about 200 nodes)
+     * Time complexity is O(V^3)
+     *
+     * - We start representing the graph edges as a matrix
+     *      adj[i][j] = weight of the edge among node i and j or +INF if no edge exists
+     *
+     * - int DP[N][N][N]
+     *  DP[k][i][j] = sp from i to j routing through nodes 0..k
+     *  DP[0][i][j] = adj[i][j]
+     *  then - DP[k][i][j] = min(dp[k-1][i][j], dp[k-1][i][k]+dp[k-1][k][j])
+     */
+    public int[][] floydWarshall(int[][] adj){
+        int n = adj.length;
+        int[][] dp = new int[n][n];
+        int[][] next = new int[n][n];
+        for(int i = 0; i< n; i++) dp[i] = Arrays.copyOf(adj[i], n);
+
+        for(int k = 0; k<n; k++)
+            for(int i = 0; i<n; i++)
+                for(int j  =0; j<n; j++)
+                    if(dp[i][k] + dp[k][j] < dp[i][j]) {
+                        dp[i][j] = dp[i][k] + dp[k][j];
+                        next[i][j] = next[i][k];
+                    }
+         // For negative cycle detection perform ther same triple loop
+         // But every time you can relax a distance, write -INF to mark that edge as affected by a neg cycle
+        return dp;
+    }
 
     /**
-     * BFS - Breadth First Search
+    * BFS - Breadth First Search
      * Graph as: Adjacency List - Adj|V| is an array with as many elements as vertexes in the graph
      *  each element contains a list of vertexes reachable in one step from that vertex.
      *
@@ -295,5 +326,31 @@ public class Algorithms<T extends Comparable> {
         return count >= nums.length/2 ? candidate : null;
     }
 
+    /**
+     * GCD - Series of numbers
+     * NB gcd(a,b,c) = gcd(gcd(a,b),c) = gcd(gcd(c,b),a) = gcd(gcd(a,c),b)
+     */
+    public int generalGcd(int[] values){
+        int res = values[0];
+        for(int i = 1; i<values.length; i++) {
+            res = gcd(res, values[i]);
+        }
+        return res;
+    }
+
+    /**
+     * Euclidean Algorithm for GCD - O(log(min(a,b)))
+     */
+    public int gcd(int a, int b){
+        /*if(b == 0)
+            return a;
+        return gcd(b, a%b);*/ //recursive version
+        while(b != 0){
+            int tmp = a%b;
+            a = b;
+            b = tmp;
+        }
+        return a;
+    }
 
 }
