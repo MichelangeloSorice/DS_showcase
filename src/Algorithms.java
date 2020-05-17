@@ -188,6 +188,9 @@ public class Algorithms<T extends Comparable> {
      * The we merge sorted arrays which can be done in linear time by scanning
      * both halves in order
      *
+     * STABLE - Does maintain original ordering of elements in case of equal keys
+     * NB In java arrays.sort uses quick sort for primitive types and ,erge sort for object[] (including Strings)
+     *
      * AVG complexity - O(n*log(N)) but requires copy of data: not in place
      * WC - O(n*log(N))
      */
@@ -238,6 +241,7 @@ public class Algorithms<T extends Comparable> {
      * QUICK SORT:
      * We take a pivot point (el in the list), move all bigger things to the right of pivot
      * and all smaller things to the left of it. Recurse and sort the left side and the right side.
+     * NOT STABLE - Does not maintain original ordering of elements in case of equal keys
      *
      * AVG. Complexity - O(n*log(N)) in place algorithm
      * WC - O(N*N) when we choose as pivot always the larger or smaller element
@@ -342,13 +346,13 @@ public class Algorithms<T extends Comparable> {
      * Euclidean Algorithm for GCD - O(log(min(a,b)))
      */
     public int gcd(int a, int b){
-        /*if(b == 0)
-            return a;
-        return gcd(b, a%b);*/ //recursive version
-        while(b != 0){
-            int tmp = a%b;
-            a = b;
-            b = tmp;
+        /*if(a == 0)
+            return b;
+        return gcd(b%a, a);*/ //recursive version
+        while(a != 0){
+            int tmp = b%a;
+            b = a;
+            a = tmp;
         }
         return a;
     }
