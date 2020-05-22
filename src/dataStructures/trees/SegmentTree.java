@@ -7,7 +7,7 @@ package dataStructures.trees;
  * NOTES:
  * -Tree size has 4*N as upper limit:
  *   1 - the height of the tree is log2(N)
- *   2 - we store the tree withig an array root at index 1 - for node i - lc at 2*i, rc at 2*i+1
+ *   2 - we store the tree within an array rooted at index 1 - for node i - lc at 2*i, rc at 2*i+1
  *   Thus the rightmost node of a level at depth h is at 2^(h+1)-1
  *   The upper limit is 2^(log2(N)+1)-1 < 2*2^(log2(N)) = 4*2^(log2(N)-1) < 4*2^(log2(N)) == 4*N  :D
  */
