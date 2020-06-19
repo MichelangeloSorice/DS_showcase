@@ -2,6 +2,7 @@ package algorithms;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Utility {
 
@@ -28,9 +29,14 @@ public class Utility {
 
         for(int i = pl; i<sl; i++){
             // First remove hash component associated with first char of previous window
-            wh = ((wh - (long)(s.charAt(i-pl)-'a')*h) * alphSz + (long)(s.charAt(i)-'a'))%mod;
+            wh = (wh - (long)(s.charAt(i-pl)-'a')*h);
             // Be aware wh can be negative now
             if(wh < 0) wh+=mod;
+
+            // The comupte hash including new character
+            wh = (wh * alphSz + (long)(s.charAt(i)-'a'))%mod;
+
+
 
             if(wh == ph){
                 // Should first check actual matching of chars and then
@@ -40,6 +46,46 @@ public class Utility {
 
         return res;
     }
+
+// ================================================================================================================
+
+    /**
+     * RESERVOIR SAMPLING - Randomly select k elements from a set of M items or from a continuous stram of items
+     * Proof
+     * - For elements initially in reservoir prob of being in reservoir at the end is
+     * ProbOfNonSelFor(k+1) * ProbOfNonSelFor(k+2) *  ... * ProbOfNonSelFor(N)
+     * k/k+1 * k+1/k+2 * ... * n-1/n = k/n
+     *
+     * - For elements at position i > k in items
+     * ProbOfBeingSel(i) * ProbOfNotBeingSelFor(i+1) * ..
+     * k/i * i/i+1 * ... * n-1/n = K/n
+     *
+     */
+
+    public int[] sample(int[] items, int k){
+        // error condition
+        if(k > items.length) return null;
+
+        Random rand = new Random();
+        int[] out = new int[k];
+
+        // Filling up reservoir all elements have prob 1 to be selected now
+        for(int i = 0; i<k; i++) out[i] = items[i];
+
+        for(int i = k; i<items.length; i++){
+            // Pick in range [0, i] inclusive
+            int pick = rand.nextInt(i+1);
+
+            if(pick < k){
+                out[pick] = items[i];
+            }
+        }
+
+        return out;
+
+    }
+
+
 
 // ================================================================================================================
 

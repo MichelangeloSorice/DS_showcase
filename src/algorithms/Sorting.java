@@ -27,10 +27,10 @@ public class Sorting<T extends Comparable<T>> {
         if(length <= 1) return arr;
 
         int middle = (first + last) / 2;
-        T[] merge1 = mergeSort(arr, 0, middle);
+        T[] merge1 = mergeSort(arr, first, middle);
         T[] merge2 = mergeSort(arr, middle +1, last);
 
-        return merge(merge1, merge2, last);
+        return merge(merge1, merge2, last-first);
     }
 
     private T[] merge(T[] arr1, T[] arr2, int size){
